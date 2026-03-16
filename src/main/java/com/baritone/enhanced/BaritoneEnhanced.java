@@ -2,24 +2,20 @@ package com.baritone.enhanced;
 
 import com.baritone.enhanced.commands.EnhancedCommandManager;
 import com.baritone.enhanced.features.*;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Mod("baritoneenhanced")
+@Mod(BaritoneEnhanced.MOD_ID)
 public class BaritoneEnhanced {
-    public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "baritoneenhanced";
+    private static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     private static BaritoneEnhanced instance;
-    private final Minecraft mc = Minecraft.getInstance();
     
     // Feature instances
     private AutoEatFeature autoEatFeature;
@@ -46,33 +42,11 @@ public class BaritoneEnhanced {
     public BaritoneEnhanced() {
         instance = this;
         
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        MinecraftForge.EVENT_BUS.register(this);
+        // Register the setup method for mod loading
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::clientSetup);
         
-        // Initialize features
         initializeFeatures();
-    }
-
-    private void initializeFeatures() {
-        autoEatFeature = new AutoEatFeature();
-        autoElytraFeature = new AutoElytraFeature();
-        autoAttackFeature = new AutoAttackFeature();
-        autoToolFeature = new AutoToolFeature();
-        reachFeature = new ReachFeature();
-        defendFeature = new DefendFeature();
-        seeInvisibleFeature = new SeeInvisibleFeature();
-        seeFeature = new SeeFeature();
-        outlineFeature = new OutlineFeature();
-        toolPreservationFeature = new ToolPreservationFeature();
-        chunkLoadingFeature = new ChunkLoadingFeature();
-        flyFeature = new FlyFeature();
-        enderChestFeature = new EnderChestFeature();
-        walkFeature = new WalkFeature();
-        immortalFeature = new ImmortalFeature();
-        creativeFeature = new CreativeFeature();
-        serverBypassFeature = new ServerBypassFeature();
-        antiDetectionFeature = new AntiDetectionFeature();
-        pluginBypassFeature = new PluginBypassFeature();
         commandManager = new EnhancedCommandManager();
         
         // Register event listeners
@@ -96,42 +70,35 @@ public class BaritoneEnhanced {
         MinecraftForge.EVENT_BUS.register(antiDetectionFeature);
         MinecraftForge.EVENT_BUS.register(pluginBypassFeature);
         MinecraftForge.EVENT_BUS.register(commandManager);
+        
+        LOGGER.info("Baritone Enhanced initialized with 31 commands!");
+    }
+
+    private void initializeFeatures() {
+        autoEatFeature = new AutoEatFeature();
+        autoElytraFeature = new AutoElytraFeature();
+        autoAttackFeature = new AutoAttackFeature();
+        autoToolFeature = new AutoToolFeature();
+        reachFeature = new ReachFeature();
+        defendFeature = new DefendFeature();
+        seeInvisibleFeature = new SeeInvisibleFeature();
+        seeFeature = new SeeFeature();
+        outlineFeature = new OutlineFeature();
+        toolPreservationFeature = new ToolPreservationFeature();
+        chunkLoadingFeature = new ChunkLoadingFeature();
+        flyFeature = new FlyFeature();
+        enderChestFeature = new EnderChestFeature();
+        walkFeature = new WalkFeature();
+        immortalFeature = new ImmortalFeature();
+        creativeFeature = new CreativeFeature();
+        serverBypassFeature = new ServerBypassFeature();
+        antiDetectionFeature = new AntiDetectionFeature();
+        pluginBypassFeature = new PluginBypassFeature();
+        commandManager = new EnhancedCommandManager();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
         LOGGER.info("Baritone Enhanced client setup complete");
-    }
-
-    @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event) {
-        // Register any vanilla commands if needed
-    }
-
-    @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        
-        // Update features
-        if (mc.player != null && mc.level != null) {
-            autoEatFeature.tick();
-            autoElytraFeature.tick();
-            autoAttackFeature.tick();
-            autoToolFeature.tick();
-            defendFeature.tick();
-            toolPreservationFeature.tick();
-            chunkLoadingFeature.tick();
-            flyFeature.tick();
-            enderChestFeature.tick();
-            walkFeature.tick();
-            immortalFeature.tick();
-            creativeFeature.tick();
-            serverBypassFeature.tick();
-            antiDetectionFeature.tick();
-            pluginBypassFeature.tick();
-            seeInvisibleFeature.tick();
-            seeFeature.tick();
-            outlineFeature.tick();
-        }
     }
 
     public static BaritoneEnhanced getInstance() {
