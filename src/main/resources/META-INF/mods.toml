@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+issueTrackerURL="https://github.com/baritone/baritone-enhanced/issues"
+
+[[mods]]
+modId="baritoneenhanced"
+version="1.0.0"
+displayName="Baritone Enhanced"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/baritone-enhanced"
+logoFile="baritone.png"
+authors="Baritone Team"
+description="Enhanced Baritone mod with auto-eat, auto-elytra, combat features, and more utility commands."
+
+[[dependencies.baritoneenhanced]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.baritoneenhanced]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1]"
+ordering="NONE"
+side="BOTH"
