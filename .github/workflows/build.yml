@@ -5,8 +5,6 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  release:
-    types: [ published ]
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -38,44 +36,11 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build --no-daemon
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: baritone-enhanced
         path: build/libs/baritone-enhanced-1.0.0.jar
-
-    - name: Create Release
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      uses: softprops/action-gh-release@v1
-      with:
-        files: build/libs/baritone-enhanced-1.0.0.jar
-        name: Baritone Enhanced v1.0.0
-        body: |
-          ## Baritone Enhanced - Ultimate Minecraft Mod
-          
-          **31 Commands - More than any other Baritone mod!**
-          
-          ### Features:
-          - ✅ Liquid Walking (walk on water/lava)
-          - ✅ Container ESP (see inside chests)
-          - ✅ God Mode (immortality + creative abilities)
-          - ✅ Server Bypass (works on protected servers)
-          - ✅ Anti-Detection (human behavior simulation)
-          - ✅ Mining Enhancement (Haste II + tool preservation)
-          - ✅ Visual ESP (see invisible entities)
-          - ✅ Complete command set (31 total)
-          
-          ### Installation:
-          1. Install Forge 1.20.1
-          2. Download this .jar file
-          3. Place in mods folder
-          4. Launch Minecraft
-          5. Type #help for commands
-          
-          **Works on most multiplayer servers!**
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        retention-days: 30
