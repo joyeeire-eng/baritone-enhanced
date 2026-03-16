@@ -2,6 +2,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '6.0.22'
     id 'eclipse'
     id 'maven-publish'
+    id 'java'
 }
 
 version = '1.0.0'
@@ -12,50 +13,14 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}"
 
-minecraft {
-    mappings channel: 'official', version: '1.20.1'
-    
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                baritoneenhanced {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                baritoneenhanced {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'baritoneenhanced', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            mods {
-                baritoneenhanced {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
+repositories {
+    maven { url 'https://maven.minecraftforge.net' }
+    maven { url 'https://maven.cabaletta.io/' }
 }
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
+    implementation 'cabaletta:baritone:1.20.1:baritone-api'
 }
 
 jar {
