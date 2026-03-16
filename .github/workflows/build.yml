@@ -45,12 +45,6 @@ jobs:
         echo "Java version:"
         java -version
 
-    - name: Show Gradle version
-      run: ./gradlew --version
-
-    - name: Initialize Gradle wrapper
-      run: ./gradlew wrapper --gradle-version 8.1.1
-
     - name: Build project
       run: ./gradlew build --no-daemon --stacktrace
 
