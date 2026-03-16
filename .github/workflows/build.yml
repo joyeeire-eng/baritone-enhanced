@@ -48,14 +48,11 @@ jobs:
     - name: Show Gradle version
       run: ./gradlew --version
 
-    - name: Validate Gradle wrapper
-      run: ./gradlew --help
-
-    - name: Clean build
-      run: ./gradlew clean --no-daemon --stacktrace
+    - name: Initialize Gradle wrapper
+      run: ./gradlew wrapper --gradle-version 8.1.1
 
     - name: Build project
-      run: ./gradlew build --no-daemon --stacktrace --info
+      run: ./gradlew build --no-daemon --stacktrace
 
     - name: Show build results
       run: |
@@ -63,8 +60,6 @@ jobs:
         ls -la build/ || echo "No build directory"
         echo "Libs directory contents:"
         ls -la build/libs/ || echo "No libs directory"
-        echo "Reobf directory contents:"
-        ls -la build/reobf/ || echo "No reobf directory"
 
     - name: Upload artifacts
       if: success()
@@ -73,14 +68,3 @@ jobs:
         name: baritone-enhanced
         path: build/libs/*.jar
         retention-days: 30
-
-    - name: Upload failure logs
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-logs
-        path: |
-          build/
-          .gradle/
-          run/
-        retention-days: 7
