@@ -36,24 +36,8 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x gradlew
 
-    - name: Show project structure
-      run: |
-        echo "Project structure:"
-        find . -name "*.gradle" -o -name "*.java" -o -name "*.toml" | head -20
-        echo "Gradle wrapper files:"
-        ls -la gradle/wrapper/
-        echo "Java version:"
-        java -version
-
     - name: Build project
       run: ./gradlew build --no-daemon --stacktrace
-
-    - name: Show build results
-      run: |
-        echo "Build directory contents:"
-        ls -la build/ || echo "No build directory"
-        echo "Libs directory contents:"
-        ls -la build/libs/ || echo "No libs directory"
 
     - name: Upload artifacts
       if: success()
