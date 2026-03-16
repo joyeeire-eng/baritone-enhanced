@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v4
@@ -35,8 +35,11 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Show Gradle version
+      run: ./gradlew --version
+
     - name: Build with Gradle
-      run: ./gradlew build --no-daemon
+      run: ./gradlew build --no-daemon --stacktrace
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -44,3 +47,7 @@ jobs:
         name: baritone-enhanced
         path: build/libs/baritone-enhanced-1.0.0.jar
         retention-days: 30
+
+    - name: Show build directory contents
+      if: failure()
+      run: ls -la build/libs/
