@@ -1,47 +1,19 @@
 plugins {
+    id 'java'
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.34'
 }
 
 version = '1.0.0'
 group = 'com.baritone.mod'
 archivesBaseName = 'baritone-enhanced'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-minecraft {
-    mappings channel: 'official', version: '1.18.2'
-    
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                baritoneenhanced {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                baritoneenhanced {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
+repositories {
+    mavenCentral()
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
 }
 
 jar {
@@ -57,8 +29,6 @@ jar {
         ])
     }
 }
-
-jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
